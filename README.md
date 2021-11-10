@@ -1,6 +1,6 @@
 # select-rs
 
-A Select Async IO with Windows&Linux support Rust library.
+A POSIX select async IO with Windows&Linux support Rust library.
 
 [select-rs]: https://github.com/b23r0/select-rs
 
@@ -18,10 +18,10 @@ select-rs = {git = "https://github.com/b23r0/select-rs"}
 use select_rs::*;
 
 fn main(){
-	let fds : FdSet;
+	let mut fds : FdSet = unsafe {std::mem::zeroed()};
 	FD_ZERO(&mut fds);
-	FD_SET(1 , &mut fds);
-	select(2 , std::ptr::null_mut(), &mut fds ,std::ptr::null_mut());
-	assert!(FD_ISSET(1, &mut fds));
+	FD_SET(0 , &mut fds);
+	assert!(select(1, std::ptr::null_mut() , &mut fds ,std::ptr::null_mut()) > 0);
+	assert!(FD_ISSET(0, &mut fds));
 }
 ```
