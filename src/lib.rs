@@ -2,20 +2,33 @@
 
 #[cfg(target_os = "windows")]
 extern crate winapi;
-
 #[cfg(target_os = "linux")]
-use std::os::unix::prelude::{AsRawFd};
-use std::ptr;
+extern crate libc;
 #[cfg(target_os = "linux")]
-use errno::{Errno, errno};
-#[cfg(target_os = "linux")]
-use libc::*;
+extern crate errno;
 
 #[cfg(target_os = "windows")]
 pub type FdSet = winapi::um::winsock2::fd_set;
+#[cfg(target_os = "linux")]
+pub type FdSet = libc::fd_set;
+
+#[cfg(target_os = "linux")]
+pub fn FD_ISSET(fd: libc::c_int, set: *const libc::fd_set) -> bool {
+	return unsafe { libc::FD_ISSET(fd, set) };
+}
+
+#[cfg(target_os = "linux")]
+pub fn FD_SET(fd: libc::c_int, set: *mut libc::fd_set) -> () {
+	return unsafe { libc::FD_SET(fd, set) };
+}
+
+#[cfg(target_os = "linux")]
+pub fn FD_ZERO(set: *mut libc::fd_set) -> () {
+	return unsafe { libc::FD_ZERO(set) };
+}
 
 #[cfg(target_os = "windows")]
-pub unsafe fn FD_ISSET(a : u64 , set : &mut FdSet) -> bool{
+pub fn FD_ISSET(a : u64 , set : &mut FdSet) -> bool{
 	let mut i = 0 ;
 	while i < set.fd_count {
 		
@@ -29,7 +42,7 @@ pub unsafe fn FD_ISSET(a : u64 , set : &mut FdSet) -> bool{
 }
 
 #[cfg(target_os = "windows")]
-pub unsafe fn FD_SET(a : u64 , set : &mut FdSet){
+pub fn FD_SET(a : u64 , set : &mut FdSet){
     use winapi::um::winsock2::FD_SETSIZE;
 
 	let mut i  = 0 ;
@@ -47,7 +60,7 @@ pub unsafe fn FD_SET(a : u64 , set : &mut FdSet){
 }
 
 #[cfg(target_os = "windows")]
-pub unsafe fn FD_ZERO(set : &mut FdSet){
+pub fn FD_ZERO(set : &mut FdSet){
 	let mut i = 0 ;
 	while i < set.fd_count {
 		set.fd_array[i as usize] =0;
@@ -56,13 +69,21 @@ pub unsafe fn FD_ZERO(set : &mut FdSet){
 	set.fd_count = 0;
 }
 
-pub fn select(readfds: *mut FdSet, writefds: *mut FdSet,exceptfds: *mut FdSet) -> u32 {
+pub fn select( maxfd : i32, readfds: *mut FdSet, writefds: *mut FdSet,exceptfds: *mut FdSet) -> i32 {
 
     #[cfg(target_os = "windows")]
     return unsafe { winapi::um::winsock2::select(
-        0 , 
+        maxfd , 
         readfds , 
         writefds, 
         exceptfds , 
-        ptr::null_mut()) as u32 };
+        std::ptr::null_mut()) as i32 };
+
+	#[cfg(target_os = "linux")]
+	return unsafe { libc::select(
+		maxfd , 
+		readfds , 
+		writefds, 
+		exceptfds , 
+		std::ptr::null_mut()) as i32 };	
 }
