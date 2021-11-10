@@ -6,10 +6,10 @@ license = "MIT"
 readme = "README.md"
 keywords = ["select", "async" , "fd_set" , "fd_isset" ,"fd_zero"]
 repository = "https://github.com/b23r0/select-rs"
-homepage = "https://github.com/b23r0/select-rs"
-documentation = "https://github.com/b23r0/select-rs"
+homepage = "https://crates.io/crates/select-rs"
+documentation = "https://docs.rs/crate/select-rs/0.1.0"
 description = """
-A Select Async IO with Windows&Linux support Rust library.
+A POSIX select async IO with Windows&Linux support Rust library.
 """
 
 [target.'cfg(target_os = "linux")'.dependencies]
