@@ -1,4 +1,4 @@
-# select-rs
+# select-rs [![Build Status](https://app.travis-ci.com/b23r0/select-rs.svg?branch=main)](https://app.travis-ci.com/b23r0/select-rs) [![ChatOnDiscord](https://img.shields.io/badge/chat-on%20discord-blue)](https://discord.gg/ZKtYMvDFN4)
 
 A POSIX select async IO with Windows&Linux support Rust library.
 
