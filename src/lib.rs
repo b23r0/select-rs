@@ -2,29 +2,29 @@
 
 #[cfg(target_os = "windows")]
 extern crate winapi;
-#[cfg(target_os = "linux")]
+#[cfg(not(target_os = "windows"))]
 extern crate libc;
 
 #[cfg(target_os = "windows")]
 pub type FdSet = winapi::um::winsock2::fd_set;
 #[cfg(target_os = "windows")]
 pub type TimeVal = winapi::um::winsock2::timeval;
-#[cfg(target_os = "linux")]
+#[cfg(not(target_os = "windows"))]
 pub type FdSet = libc::fd_set;
-#[cfg(target_os = "linux")]
+#[cfg(not(target_os = "windows"))]
 pub type TimeVal = libc::timeval;
 
-#[cfg(target_os = "linux")]
+#[cfg(not(target_os = "windows"))]
 pub fn FD_ISSET(fd: libc::c_int, set: *const libc::fd_set) -> bool {
 	return unsafe { libc::FD_ISSET(fd, set) };
 }
 
-#[cfg(target_os = "linux")]
+#[cfg(not(target_os = "windows"))]
 pub fn FD_SET(fd: libc::c_int, set: *mut libc::fd_set) -> () {
 	return unsafe { libc::FD_SET(fd, set) };
 }
 
-#[cfg(target_os = "linux")]
+#[cfg(not(target_os = "windows"))]
 pub fn FD_ZERO(set: *mut libc::fd_set) -> () {
 	return unsafe { libc::FD_ZERO(set) };
 }
@@ -81,7 +81,7 @@ pub fn select( maxfd : i32, readfds: *mut FdSet, writefds: *mut FdSet,exceptfds:
         exceptfds , 
         timeout) as i32 };
 
-	#[cfg(target_os = "linux")]
+	#[cfg(not(target_os = "windows"))]
 	return unsafe { libc::select(
 		maxfd , 
 		readfds , 
@@ -91,7 +91,7 @@ pub fn select( maxfd : i32, readfds: *mut FdSet, writefds: *mut FdSet,exceptfds:
 }
 
 #[test]
-#[cfg(target_os = "linux")]
+#[cfg(not(target_os = "windows"))]
 fn test_select(){
 	let mut fds : FdSet = unsafe {std::mem::zeroed()};
 	FD_ZERO(&mut fds);
