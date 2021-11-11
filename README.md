@@ -1,6 +1,6 @@
 # select-rs [![Build Status](https://app.travis-ci.com/b23r0/select-rs.svg?branch=main)](https://app.travis-ci.com/b23r0/select-rs) [![ChatOnDiscord](https://img.shields.io/badge/chat-on%20discord-blue)](https://discord.gg/ZKtYMvDFN4) [![Crate](https://img.shields.io/crates/v/select-rs)](https://crates.io/crates/select-rs)
 
-A POSIX select async IO with Windows&Linux support Rust library.
+A POSIX select I/O Multiplexing Rust library.
 
 [select-rs]: https://github.com/b23r0/select-rs
 

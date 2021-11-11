@@ -1,6 +1,6 @@
 [package]
 name = "select-rs"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["b23r0 <b23r0@foxmail.com>"]
 license = "MIT"
 readme = "README.md"
@@ -9,10 +9,10 @@ repository = "https://github.com/b23r0/select-rs"
 homepage = "https://crates.io/crates/select-rs"
 documentation = "https://docs.rs/crate/select-rs/0.1.0"
 description = """
-A POSIX select async IO with Windows&Linux support Rust library.
+A POSIX select I/O Multiplexing Rust library.
 """
 
-[target.'cfg(target_os = "linux")'.dependencies]
+[target.'cfg(not(target_os = "windows"))'.dependencies]
 libc = "0.2.107"
 
 [target.'cfg(target_os = "windows")'.dependencies]
