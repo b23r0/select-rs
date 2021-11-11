@@ -9,7 +9,7 @@ A POSIX select I/O Multiplexing Rust library.
 ```toml
 # Cargo.toml
 [dependencies]
-select-rs = "0.1.0"
+select-rs = "0.1.2"
 ```
 
 # Example
